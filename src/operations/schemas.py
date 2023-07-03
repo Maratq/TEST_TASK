@@ -4,5 +4,5 @@ from pydantic import BaseModel
 
 
 class EntryCreate(BaseModel):
-    uuid: uuid.UUID
+    uuid: str
     text: str

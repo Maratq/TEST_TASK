@@ -11,8 +11,7 @@ metadata = MetaData()
 class Entry(Base):
     __tablename__ = "Entry"
 
-    uuid = Column(UUID(as_uuid=True), primary_key=True, nullable=False,
-                  default=uuid.uuid4)
+    uuid = Column(String, primary_key=True, nullable=False)
     text = Column(String(255), nullable=False)
 
 

@@ -1,7 +1,7 @@
-import uuid
 
 import uvicorn
 from fastapi import Depends, FastAPI, HTTPException
+from sqlalchemy import insert
 from sqlalchemy.orm import Session
 
 from src.database import SessionLocal
@@ -23,9 +23,9 @@ def get_db():
 
 
 @app.post("/new")
-async def create_entry(entry: schemas.EntryCreate, db: Session = Depends(get_db)):
-    entries = Entry(uuid=entry.uuid, text=entry.text)
-    db.add(entries)
+async def create_entry(entries: schemas.EntryCreate, db: Session = Depends(get_db)):
+    entries = insert(Entry).values([{"uuid": entry.uuid, "text": entry.text} for entry in entries])
+    db.execute(entries)
     db.commit()
     db.refresh(entries)
     return {"message": "New entry created successfully"}
@@ -38,7 +38,7 @@ async def get_all_entries(db: Session = Depends(get_db)):
 
 
 @app.get("/{uuid}")
-async def get_entry_by_uuid(uuid: uuid.UUID, db: Session = Depends(get_db)):
+async def get_entry_by_uuid(uuid: str, db: Session = Depends(get_db)):
     entry = db.query(Entry).filter_by(uuid=uuid).first()
     if not entry:
         raise HTTPException(status_code=404, detail="Entry not found")
@@ -52,7 +52,7 @@ async def get_entry_count(count: int, db: Session = Depends(get_db)):
 
 
 @app.delete("/{uuid}")
-async def delete_entry_by_uuid(uuid: uuid.UUID, db: Session = Depends(get_db)):
+async def delete_entry_by_uuid(uuid: str, db: Session = Depends(get_db)):
     entry = db.query(Entry).filter_by(uuid=uuid).first()
     if not entry:
         raise HTTPException(status_code=404, detail="Entry not found")

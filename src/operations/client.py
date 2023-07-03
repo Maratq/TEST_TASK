@@ -1,8 +1,7 @@
-import random
 import string
 import time
-from datetime import time
-from random import random
+import datetime
+import random
 
 import requests
 
@@ -15,11 +14,12 @@ def generate_random_string(length):
 
 
 def insert_entries(num_entries):
-    entries = [{'id': generate_random_string(16), 'text': 'text'} for _ in range(num_entries)]
+    entries = [{'uuid': generate_random_string(16), 'text': 'text'} for _ in range(num_entries)]
     response = requests.post(f"{API_URL}/new", json=entries)
-    if response.status_code == 200:
+    if response.status_code == 201:
         print(f"{num_entries} entries inserted successfully.")
     else:
+        print(entries)
         print(f"Failed to insert entries. Error: {response.text}")
 
 
