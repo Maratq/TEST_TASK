@@ -24,7 +24,7 @@ def get_db():
 
 @app.post("/new")
 async def create_entry(entries: schemas.EntryCreate, db: Session = Depends(get_db)):
-    entries = insert(Entry).values([{"uuid": entry.uuid, "text": entry.text} for entry in entries])
+    entries = insert(Entry).values([{"uuid": entry.uuid, "text": entry.text} for entry in entries]) # Ошибка при вставке данных 422 Unprocessable Entity, AttributeError: 'tuple' object has no attribute 'uuid'
     db.execute(entries)
     db.commit()
     db.refresh(entries)
