@@ -1,4 +1,3 @@
-
 import uvicorn
 from fastapi import Depends, FastAPI, HTTPException
 from sqlalchemy import insert
@@ -11,6 +10,8 @@ from src.operations.models import Entry, create_database
 app = FastAPI(
     title="Entryes app"
 )
+
+
 create_database()
 
 
