@@ -1,8 +1,7 @@
-import random
 import string
 import time
-from datetime import time
-from random import random
+import datetime
+import random
 
 import requests
 
