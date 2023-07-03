@@ -19,7 +19,6 @@ def insert_entries(num_entries):
     if response.status_code == 201:
         print(f"{num_entries} entries inserted successfully.")
     else:
-        print(entries)
         print(f"Failed to insert entries. Error: {response.text}")
 
 
