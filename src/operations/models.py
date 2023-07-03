@@ -1,5 +1,8 @@
 import uuid
-from sqlalchemy import Column, String, MetaData, Integer, UniqueConstraint
+
+from sqlalchemy import Column, MetaData, String
+from sqlalchemy.dialects.postgresql import UUID
+
 from src.database import Base, engine
 
 metadata = MetaData()
@@ -8,13 +11,9 @@ metadata = MetaData()
 class Entry(Base):
     __tablename__ = "Entry"
 
-    id = Column(Integer, primary_key=True)
-    uuid = Column(String(36), nullable=False,default=uuid.uuid4())
-    text = Column(String(255), nullable=True)
-
-    __table_args__ = (
-        UniqueConstraint('uuid', name='ux_Entry_uuid'),
-    )
+    uuid = Column(UUID(as_uuid=True), primary_key=True, nullable=False,
+                  default=uuid.uuid4)
+    text = Column(String(255), nullable=False)
 
 
 def create_database():
